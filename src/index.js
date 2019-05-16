@@ -1,6 +1,11 @@
 import Phaser from "phaser";
-import preguntas from "./mock.js";
+import cuestionarios from "./mock.js";
 import fajoBilletes from "./assets/fajoE.svg";
+
+let graphics, score = 200, fajoE, fajosEuros, textoTamanio, rectW, rectH, posRectY, posicionRect;
+let escala = window.devicePixelRatio;
+let totalWidth = window.innerWidth * escala;
+let totalHeight= window.innerHeight * escala;
 
 const config = {
   type: Phaser.AUTO,
@@ -26,14 +31,9 @@ const config = {
     update: update
   }
 };
-let graphics, score = 200,
-  fajoE, fajosEuros, textoTamanio, rectW, rectH, posRectY, posicionRect;
 
 let game = new Phaser.Game(config);
 
-let escala = window.devicePixelRatio;
-let totalWidth = window.innerWidth * escala;
-let totalHeight = window.innerHeight * escala;
 
 function preload() {
   this.load.image('fajoE', fajoBilletes);
@@ -42,7 +42,7 @@ function preload() {
 function create() {
   this.cameras.main.setBackgroundColor(0xbababa);
   let fontSize = 18 * escala;
-  let preguntaText = this.add.text(40, 20, preguntas[0].pregunta, {
+  let preguntaText = this.add.text(40, 20, cuestionarios[0].preguntas[0].pregunta, {
     fontSize: fontSize, //'40px',
     fill: '#000',
     align: 'center',
@@ -54,11 +54,11 @@ function create() {
   posicionRect = {
     posX: 50 * escala,
     posY: totalHeight / 4,
-    posXdesplazado: (102 + fontSize) * escala
+    posXdesplazado: (100 + fontSize) * escala
   }
 
-  respuesta(this, posicionRect.posX, preguntas[0].respuestas[0].respuesta, 0xffff00);
-  respuesta(this, posicionRect.posX + posicionRect.posXdesplazado, preguntas[3].respuestas[0].respuesta, 0xff0000);
+  respuesta(this, posicionRect.posX, cuestionarios[0].preguntas[0].respuestas[0], 0xffff00);
+  respuesta(this, posicionRect.posX + posicionRect.posXdesplazado, cuestionarios[0].preguntas[0].respuestas[1], 0xff0000);
 
   let cursors = this.input.keyboard.createCursorKeys();
 
@@ -111,17 +111,17 @@ function checkOriention(orientation) {
   }
 }
 
-function respuesta(scene, containerX, respuesta, rectColor) {
+function respuesta(scene, containerX, respuesta, rectColor){
   textoTamanio = 18 * escala;
   rectW = rectH = 100 * escala;
 
   let posRectX = rectW / 2;
-  let posRectY = rectH / 2;
+  posRectY = rectH / 2;
 
   let posXrespuestaTxt = (posRectX - respuesta.length * 32 /
-    (respuesta.length)) / window.devicePixelRatio;
-  // let posYrespuestaTxt = respuesta.length > 10? -100 : -20;
-  let posYrespuestaTxt = posRectY * 2 + textoTamanio;
+    respuesta.length )/ escala - 25;
+
+  let posYrespuestaTxt =  posRectY * 2 + textoTamanio;
 
   let respuestaText = scene.add.text(posXrespuestaTxt, posYrespuestaTxt, respuesta, {
     fontSize: textoTamanio,
