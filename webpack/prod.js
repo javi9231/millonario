@@ -10,6 +10,7 @@ module.exports = merge(base, {
   },
   devtool: false,
   performance: {
+    hints: false,
     maxEntrypointSize: 900000,
     maxAssetSize: 900000
   },
