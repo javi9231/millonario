@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import api from "./js/api/api.js";
 import cuestionarios from "./mock.js";
 import fajoBilletes from "./assets/fajoE.svg";
 
@@ -6,7 +7,7 @@ let graphics, score = 200, fajoE, fajosEuros, textoTamanio, rectW, rectH, posRec
 let escala = window.devicePixelRatio;
 let totalWidth = window.innerWidth * escala;
 let totalHeight= window.innerHeight * escala;
-
+console.log('api' + api());
 const config = {
   type: Phaser.AUTO,
   width: window.innerWidth * window.devicePixelRatio,
