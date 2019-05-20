@@ -1,7 +1,8 @@
 import Phaser from "phaser";
-import api from "./js/api/api.js";
 import cuestionarios from "./mock.js";
+import api from "./js/api/api.js";
 import fajoBilletes from "./assets/fajoE.svg";
+import MedidorTiempo from "./js/object/MedidorTiempo.js";
 
 let graphics, score = 200, fajoE, fajosEuros, textoTamanio, rectW, rectH, posRectY, posicionRect;
 let escala = window.devicePixelRatio;
@@ -42,8 +43,14 @@ function preload() {
 
 function create() {
   this.cameras.main.setBackgroundColor(0xbababa);
+
+  this.medidorView = this.add.container();
+  this.medidorTiempo = new MedidorTiempo(this, this.medidorView,
+    'MedidorTiempo', cuestionarios.gameOptions);
+
   let fontSize = 18 * escala;
-  let preguntaText = this.add.text(40, 20, cuestionarios[0].preguntas[0].pregunta, {
+  let preguntaText = this.add.text(40, 20,
+    cuestionarios[0].preguntas[0].pregunta, {
     fontSize: fontSize, //'40px',
     fill: '#000',
     align: 'center',

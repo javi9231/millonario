@@ -1,4 +1,6 @@
-
+export const gameOptions = {
+    initialTime: 60
+}
 const cuestionarios = [
     {
         "_id": "5bb47248c6632b0bde14803a",
