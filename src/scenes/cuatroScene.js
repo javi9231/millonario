@@ -1,7 +1,13 @@
+import fajoBilletes from "../../src/assets/fajoE.svg";
+import Fajos from "../objects/Fajos";
+import Sizes from "../utils/sizes";
+import {cuestionarios, juegoConfig} from "../mock";
+import {reloj} from "../objects/reloj";
+import Respuesta from "../objects/Respuesta";
+
 export default class cuatroScene extends Phaser.Scene {
   constructor(datos) {
     super('cuatroScene');
-
   }
 
   init(datos) {
@@ -126,7 +132,6 @@ export default class cuatroScene extends Phaser.Scene {
         this.y = dragY;
       });
     });
-    var canvas = this.sys.game.canvas;
   }
 
   timeIsOver() {
@@ -220,7 +225,7 @@ export default class cuatroScene extends Phaser.Scene {
 
   update() {
     this.fajosEuros.children.iterate(fajo => {
-      fajo.clearTint(); // es lo mismo pintar de blanco (0xffffff);
+      fajo.clearTint(); 
     });
 
     this.posicionesRespuestas.forEach(elemento => {

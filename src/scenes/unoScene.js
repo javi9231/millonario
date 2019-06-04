@@ -1,5 +1,4 @@
 import fajoBilletes from "../../src/assets/fajoE.svg";
-// import MedidorTiempo from "../../js/object/MedidorTiempo.js";
 import Fajos from "../objects/Fajos";
 import Sizes from "../utils/sizes";
 import {cuestionarios, juegoConfig} from "../mock";
@@ -57,7 +56,6 @@ export default class unoScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor(0xbababa);
 
-    // this.muestraPregunta();
     if (!this.preguntaText) {
       this.preguntaText = this.add.text(40, 20,
         this.pregunta.pregunta + ' score: ' + this.score, {
@@ -76,7 +74,6 @@ export default class unoScene extends Phaser.Scene {
       rectW: this.tamanioRespuestaW,
       rectH: this.tamanioRespuestaH,
       escala: this.escala,
-      fontSize: 18 * this.escala,
       posXfajos: (100 + this.fontSize) * this.escala,
       color: 0xff0000
     }
@@ -90,7 +87,6 @@ export default class unoScene extends Phaser.Scene {
       this.timer.abort();
       this.timeIsOver();
     });
-    this.eventos.on('resize', this.resize, this);
 
     this.posicionesRespuestas = [];
 
@@ -123,14 +119,15 @@ export default class unoScene extends Phaser.Scene {
         this.y = dragY;
       });
     });
-    var canvas = this.sys.game.canvas;
   }
 
   timeIsOver() {
     console.log('Final escena 1');
     this.eliminarFajosMalColocados();
+
     this.scene.start('FinalRespuesta', {
       score: this.score,
+      fajosCorrectos: this.fajosCorrectos,
       preguntas: this.preguntas,
       pregunta: this.pregunta,
       nivelJuego: 1
@@ -147,28 +144,23 @@ export default class unoScene extends Phaser.Scene {
          if (i != this.pregunta.respuestaCorrecta) {
            this.eliminarFajos(this, this.posicionesRespuestas[i]);
          } else if (i == this.pregunta.respuestaCorrecta) {
-           this.score = this.contarFajos(this, this.posicionesRespuestas[i]) *
-             juegoConfig.valorFajo;
+           this.fajosCorrectos = this.devolverFajos(this, this.posicionesRespuestas[i]);
+           console.log(this.fajosCorrectos);//this.score = this.fajosCorrectos.length() * juegoConfig.valorFajo;
          }
        }
      }
    }
+   //
+   // resize () {
+   //   let width = window.innerWidth * window.devicePixelRatio;
+   //   let height = window.innerHeight * window.devicePixelRatio;
+   //   this.cameras.main.setBounds(0, 0, width, height);
+   //   console.log(width + ' ' + height);
+   // }
 
-   resize () {
-     let width = window.innerWidth * window.devicePixelRatio;
-     let height = window.innerHeight * window.devicePixelRatio;
-     this.cameras.main.setBounds(0, 0, width, height);
-     console.log(width + ' ' + height);
-   }
-
-   contarFajos (scene, elemento) {
-     let within = scene.physics.overlapRect(elemento.posX, elemento.posY,
-       elemento.rectW, elemento.rectH, true, true);
-     let contador = 0;
-     within.forEach(function(body) {
-       contador++;
-     });
-     return contador;
+   devolverFajos(scene, elemento){
+     return scene.physics.overlapRect(elemento.posX, elemento.posY,
+       elemento.rectW, elemento.rectH, true, true).slice();
    }
 
    eliminarFajos (scene, elemento) {

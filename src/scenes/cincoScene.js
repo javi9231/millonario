@@ -1,3 +1,10 @@
+import fajoBilletes from "../../src/assets/fajoE.svg";
+import Fajos from "../objects/Fajos";
+import Sizes from "../utils/sizes";
+import {cuestionarios, juegoConfig} from "../mock";
+import {reloj} from "../objects/reloj";
+import Respuesta from "../objects/Respuesta";
+
 export default class cincoScene extends Phaser.Scene {
   constructor(datos) {
     super('cincoScene');
@@ -14,7 +21,6 @@ export default class cincoScene extends Phaser.Scene {
     this.totalWidth = sizes.totalWidth;
     this.totalHeight = sizes.totalHeight;
     this.fontSize = sizes.fontSize;
-
   }
 
   inicializarScene() {
@@ -43,11 +49,10 @@ export default class cincoScene extends Phaser.Scene {
     });
 
     this.cameras.main.setBackgroundColor(0xbababa);
-    // this.muestraPregunta();
     if (!this.preguntaText) {
       this.preguntaText = this.add.text(40, 20,
         this.pregunta.pregunta + ' score: ' + this.score, {
-          fontSize: this.fontSize, //'40px',
+          fontSize: this.fontSize,
           fill: '#000',
           align: 'center',
           wordWrap: {
@@ -64,7 +69,6 @@ export default class cincoScene extends Phaser.Scene {
       rectW: this.tamanioRespuestaW,
       rectH: this.tamanioRespuestaH,
       escala: this.escala,
-      fontSize: 18 * this.escala,
       posXfajos: (100 + this.fontSize) * this.escala,
       color: 0xff0000
     }
@@ -97,27 +101,7 @@ export default class cincoScene extends Phaser.Scene {
 
     this.graphics = this.add.graphics();
 
-    this.fajosEuros = this.physics.add.group({
-      key: 'fajoE',
-      repeat: (this.score / juegoConfig.valorFajo) - 1,
-      setXY: {
-        x: this.totalWidth - this.posicionRect.posXfajos,
-        y: this.posicionRect.posY - 100
-      }
-    });
-
-    this.fajosEuros.children.iterate(fajo => {
-      fajo.setInteractive({
-        draggable: true
-      });
-      fajo.setCollideWorldBounds(true);
-      fajo.setScale(this.escala / 2);
-      fajo.on('drag', function(pointer, dragX, dragY) {
-        this.x = dragX;
-        this.y = dragY;
-      });
-    });
-    var canvas = this.sys.game.canvas;
+    
   }
 
   timeIsOver() {

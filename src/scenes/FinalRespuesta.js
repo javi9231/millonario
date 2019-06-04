@@ -1,30 +1,30 @@
 // import fajoBilletes from "../assets/fajoE.svg";
 // import MedidorTiempo from "../../js/object/MedidorTiempo.js";
+import { juegoConfig } from "../mock";
+import Sizes from "../utils/sizes";
 
 export default class FinalRespuesta extends Phaser.Scene {
   constructor() {
     super('FinalRespuesta');
-    this.escala = window.devicePixelRatio;
-    this.totalWidth = window.innerWidth * this.escala;
-    this.totalHeight = window.innerHeight * this.escala;
-    this.fontSize = 32 * this.escala;
     this.nivelJuego = 1;
   }
 
   init(datos) {
     this.add.displayList.removeAll();
     this.score = datos.score;
+    this.fajosEuros = datos.fajosCorrectos,
     this.preguntas = datos.preguntas || 'falta preguntas';
     this.pregunta = datos.pregunta || 'falta pregunta';
-    // this.nivelJuego = datos.nivelJuego;
-    this.inicializarScene();
-    console.log('datos: ');
-    console.log(datos);
-    console.log('Score: ' + this.score);
   }
 
-  preload() {
-    this.load.image('fajoE', "./assets/fajoE.svg");
+  getSizes(){
+    let sizes = new Sizes();
+    this.escala = sizes.escala;
+    this.totalWidth = sizes.totalWidth;
+    this.totalHeight = sizes.totalHeight;
+    this.fontSize = sizes.fontSize;
+    this.tamanioRespuestaW = this.totalWidth / this.numeroRespuestas;
+    this.tamanioRespuestaH = this.totalHeight / 4;
   }
 
   inicializarScene() {
@@ -42,6 +42,8 @@ export default class FinalRespuesta extends Phaser.Scene {
   }
 
   create() {
+    this.getSizes();
+    this.inicializarScene();
 
     this.scale.on('orientationchange', function(orientation) {
       if (orientation === Phaser.Scale.PORTRAIT) {
@@ -76,6 +78,7 @@ export default class FinalRespuesta extends Phaser.Scene {
           this.scene.remove('unoScene');
           this.scene.start('dosScene', {
             score: this.score,
+            fajosEuros: this.fajosEuros,
             preguntas: this.preguntas
           });
           break;
@@ -83,6 +86,7 @@ export default class FinalRespuesta extends Phaser.Scene {
           this.scene.remove('dosScene');
           this.scene.start('tresScene', {
             score: this.score,
+            fajosEuros: this.fajosEuros,
             preguntas: this.preguntas
           });
           break;
@@ -90,6 +94,7 @@ export default class FinalRespuesta extends Phaser.Scene {
           this.scene.remove('tresScene');
           this.scene.start('cuatroScene', {
             score: this.score,
+            fajosEuros: this.fajosEuros,
             preguntas: this.preguntas
           });
           break;
@@ -97,6 +102,7 @@ export default class FinalRespuesta extends Phaser.Scene {
           this.scene.remove('cuatroScene');
           this.scene.start('cincoScene', {
             score: this.score,
+            fajosEuros: this.fajosEuros,
             preguntas: this.preguntas
           });
           break;

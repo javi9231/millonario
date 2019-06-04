@@ -1,3 +1,10 @@
+import fajoBilletes from "../../src/assets/fajoE.svg";
+import Fajos from "../objects/Fajos";
+import Sizes from "../utils/sizes";
+import {cuestionarios, juegoConfig} from "../mock";
+import {reloj} from "../objects/reloj";
+import Respuesta from "../objects/Respuesta";
+
 export default class dosScene extends Phaser.Scene {
   constructor() {
     super('dosScene');
@@ -5,6 +12,7 @@ export default class dosScene extends Phaser.Scene {
 
   init(datos) {
     this.score = datos.score;
+    this.fajosEuros = datos.fajosEuros;
     this.preguntas = datos.preguntas;
   }
 
@@ -62,7 +70,6 @@ export default class dosScene extends Phaser.Scene {
       rectW: this.tamanioRespuestaW,
       rectH: this.tamanioRespuestaH,
       escala: this.escala,
-      fontSize: 18 * this.escala,
       posXfajos: (100 + this.fontSize) * this.escala,
       color: 0xff0000
     }
@@ -92,27 +99,23 @@ export default class dosScene extends Phaser.Scene {
     });
 
     this.graphics = this.add.graphics();
+    //
+    // let nFajos = (this.score / juegoConfig.valorFajo) - 1;
+    // let fajos = new Fajos(this, 100, 100, 'fajoE', nFajos);
+    // this.fajosEuros = fajos.getFajos();
 
-    this.fajosEuros = this.physics.add.group({
-      key: 'fajoE',
-      repeat: (this.score / juegoConfig.valorFajo) - 1,
-      setXY: {
-        x: this.totalWidth - this.posicionRect.posXfajos,
-        y: this.posicionRect.posY - 100
-      }
-    });
+    // this.fajosEuros.children.iterate(fajo => {
+    //   fajo.setInteractive({
+    //     draggable: true
+    //   });
+    //   fajo.setCollideWorldBounds(true);
+    //   fajo.setScale(this.escala);
+    //   fajo.on('drag', function(pointer, dragX, dragY) {
+    //     this.x = dragX;
+    //     this.y = dragY;
+    //   });
+    // });
 
-    this.fajosEuros.children.iterate(fajo => {
-      fajo.setInteractive({
-        draggable: true
-      });
-      fajo.setCollideWorldBounds(true);
-      fajo.setScale(this.escala / 2);
-      fajo.on('drag', function(pointer, dragX, dragY) {
-        this.x = dragX;
-        this.y = dragY;
-      });
-    });
     var canvas = this.sys.game.canvas;
   }
 
@@ -207,7 +210,7 @@ export default class dosScene extends Phaser.Scene {
   }
 
   update(){
-    this.fajosEuros.children.iterate(fajo => {
+    this.fajosEuros.forEach(fajo => {
       fajo.clearTint(); // es lo mismo pintar de blanco (0xffffff);
     });
 

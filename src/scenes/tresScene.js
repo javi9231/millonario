@@ -1,9 +1,13 @@
+import fajoBilletes from "../../src/assets/fajoE.svg";
+import Fajos from "../objects/Fajos";
+import Sizes from "../utils/sizes";
+import {cuestionarios, juegoConfig} from "../mock";
+import {reloj} from "../objects/reloj";
+import Respuesta from "../objects/Respuesta";
+
 export default class tresScene extends Phaser.Scene {
   constructor(datos) {
     super('tresScene');
-    this.escala = window.devicePixelRatio;
-    this.totalWidth = window.innerWidth * this.escala;
-    this.totalHeight = window.innerHeight * this.escala;
   }
 
   init(datos) {
@@ -108,27 +112,22 @@ export default class tresScene extends Phaser.Scene {
 
     this.graphics = this.add.graphics();
 
-    this.fajosEuros = this.physics.add.group({
-      key: 'fajoE',
-      repeat: (this.score / juegoConfig.valorFajo) - 1,
-      setXY: {
-        x: this.totalWidth - this.posicionRect.posXfajos,
-        y: this.posicionRect.posY - 100
-      }
-    });
+    let nFajos = (this.score / juegoConfig.valorFajo) - 1;
+    let fajos = new Fajos(this, 100, 100, 'fajoE', nFajos);
+    this.fajosEuros = fajos.getFajos();
 
     this.fajosEuros.children.iterate(fajo => {
       fajo.setInteractive({
         draggable: true
       });
       fajo.setCollideWorldBounds(true);
-      fajo.setScale(this.escala / 2);
+      fajo.setScale(this.escala);
       fajo.on('drag', function(pointer, dragX, dragY) {
         this.x = dragX;
         this.y = dragY;
       });
     });
-    var canvas = this.sys.game.canvas;
+
   }
 
 
