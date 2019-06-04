@@ -1,4 +1,4 @@
-// import fajoBilletes from "../assets/fajoE.svg";
+import fajoBilletes from "../../src/assets/fajoE.svg";
 // import MedidorTiempo from "../../js/object/MedidorTiempo.js";
 import Fajos from "../objects/Fajos";
 import Sizes from "../utils/sizes";
@@ -15,7 +15,7 @@ export default class unoScene extends Phaser.Scene {
   }
 
   preload() {
-    // this.load.image('fajoE', "./assets/fajoE.svg");
+    this.load.image('fajoE', fajoBilletes);
   }
 
   getSizes(){
@@ -109,29 +109,20 @@ export default class unoScene extends Phaser.Scene {
     this.graphics = this.add.graphics();
 
     let nFajos = (this.score / juegoConfig.valorFajo) - 1;
-    let fajos = new Fajos(this, nFajos);
+    let fajos = new Fajos(this, 100, 100, 'fajoE', nFajos);
     this.fajosEuros = fajos.getFajos();
 
-    // this.physics.add.group({
-    //   key: 'fajoE',
-    //   repeat: (this.score / juegoConfig.valorFajo) - 1,
-    //   setXY: {
-    //     x: this.totalWidth - this.posicionRect.posXfajos,
-    //     y: this.posicionRect.posY - 100
-    //   }
-    // });
-    //
-    // this.fajosEuros.children.iterate(fajo => {
-    //   fajo.setInteractive({
-    //     draggable: true
-    //   });
-    //   fajo.setCollideWorldBounds(true);
-    //   fajo.setScale(this.escala);
-    //   fajo.on('drag', function(pointer, dragX, dragY) {
-    //     this.x = dragX;
-    //     this.y = dragY;
-    //   });
-    // });
+    this.fajosEuros.children.iterate(fajo => {
+      fajo.setInteractive({
+        draggable: true
+      });
+      fajo.setCollideWorldBounds(true);
+      fajo.setScale(this.escala);
+      fajo.on('drag', function(pointer, dragX, dragY) {
+        this.x = dragX;
+        this.y = dragY;
+      });
+    });
     var canvas = this.sys.game.canvas;
   }
 
