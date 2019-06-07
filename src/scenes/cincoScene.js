@@ -25,6 +25,7 @@ export default class cincoScene extends Phaser.Scene {
     this.pregunta = this.pregunta || this.resultadoAleatorio(this.preguntas);
     this.colores = juegoConfig.colores.slice();
     this.getSizes();
+    this.comodin5050();
   }
 
   getSizes() {
@@ -50,16 +51,24 @@ export default class cincoScene extends Phaser.Scene {
     this.posicionesRespuestas = [];
 
     this.pregunta.respuestas.forEach(respuesta => {
-      if (respuesta) {
+      if (respuesta != null) {
         this.posicionRect.color = this.resultadoAleatorio(this.colores);
         this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
 
-        this.res1 = new Respuesta(this, this.gameView, this.posicionRect,
-          respuesta, this.posicionRect.color);
-        this.posicionRect.posX += (this.tamanioRespuestaW);
+        this.res1 = new Respuesta(
+          this,
+          this.gameView,
+          this.posicionRect,
+          respuesta,
+          this.posicionRect.color
+        );
+        this.posicionRect.posX += this.tamanioRespuestaW;
         console.log(this.posicionesRespuestas);
+      } else{
+        this.posicionesRespuestas.push(null);
       }
     });
+
 
     this.crearFajos((this.score / juegoConfig.valorFajo) - 1);
     // -1 porque la libreria empieza a crear desde 0

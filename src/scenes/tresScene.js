@@ -7,7 +7,7 @@ import Respuesta from "../objects/Respuesta";
 
 export default class tresScene extends Phaser.Scene {
   constructor(datos) {
-    super('tresScene');
+    super("tresScene");
   }
 
   init(datos) {
@@ -16,7 +16,7 @@ export default class tresScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('fajoE', fajoBilletes);
+    this.load.image("fajoE", fajoBilletes);
   }
 
   inicializarScene() {
@@ -25,6 +25,7 @@ export default class tresScene extends Phaser.Scene {
     this.pregunta = this.pregunta || this.resultadoAleatorio(this.preguntas);
     this.colores = juegoConfig.colores.slice();
     this.getSizes();
+    this.eliminarUnaRespuesta();
   }
 
   getSizes() {
@@ -54,25 +55,45 @@ export default class tresScene extends Phaser.Scene {
         this.posicionRect.color = this.resultadoAleatorio(this.colores);
         this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
 
-        this.res1 = new Respuesta(this, this.gameView, this.posicionRect,
-          respuesta, this.posicionRect.color);
-        this.posicionRect.posX += (this.tamanioRespuestaW);
+        this.res1 = new Respuesta(
+          this,
+          this.gameView,
+          this.posicionRect,
+          respuesta,
+          this.posicionRect.color
+        );
+        this.posicionRect.posX += this.tamanioRespuestaW;
         console.log(this.posicionesRespuestas);
+      } else{
+        this.posicionesRespuestas.push(null);
       }
     });
 
-    this.crearFajos((this.score / juegoConfig.valorFajo) - 1);
+    this.crearFajos(this.score / juegoConfig.valorFajo - 1);
     // -1 porque la libreria empieza a crear desde 0
+  }
 
+  iniciarTemporizador(tiempo) {
+    this.gameView = this.add.container();
+    this.timer = new reloj(this, this.gameView, "reloj");
+    this.timer.countdown(tiempo);
+
+    this.eventos = this.sys.events;
+    this.eventos.on("countdown", () => {
+      this.timer.abort();
+      this.timeIsOver();
+    });
   }
 
   timeIsOver() {
-    console.log('Final escena 3');
+    console.log("Final escena 3");
 
-    this.fajosCorrectos = this.fajos.devolverFajos(this,
-      this.posicionesRespuestas[this.pregunta.respuestaCorrecta]);
+    this.fajosCorrectos = this.fajos.devolverFajos(
+      this,
+      this.posicionesRespuestas[this.pregunta.respuestaCorrecta]
+    );
 
-    this.scene.start('FinalRespuesta', {
+    this.scene.start("FinalRespuesta", {
       score: this.fajosCorrectos.length * juegoConfig.valorFajo,
       preguntas: this.preguntas,
       pregunta: this.pregunta,
@@ -81,31 +102,23 @@ export default class tresScene extends Phaser.Scene {
   }
 
   mostrarPregunta() {
-    this.preguntaText = this.add.text(40, 20,
-      this.pregunta.pregunta + ' score: ' + this.score, {
+    this.preguntaText = this.add.text(
+      40,
+      20,
+      this.pregunta.pregunta + " score: " + this.score,
+      {
         fontSize: this.fontSize, //'40px',
-        fill: '#000',
-        align: 'center',
+        fill: "#000",
+        align: "center",
         wordWrap: {
           width: this.totalWidth - this.fontSize
         }
-      });
-  }
-
-  iniciarTemporizador(tiempo) {
-    this.gameView = this.add.container();
-    this.timer = new reloj(this, this.gameView, 'reloj');
-    this.timer.countdown(tiempo);
-
-    this.eventos = this.sys.events;
-    this.eventos.on('countdown', () => {
-      this.timer.abort();
-      this.timeIsOver();
-    });
+      }
+    );
   }
 
   crearFajos(nFajos) {
-    this.fajos = new Fajos(this, 100, 100, 'fajoE', nFajos);
+    this.fajos = new Fajos(this, 100, 100, "fajoE", nFajos);
     this.fajosEuros = this.fajos.getFajos();
 
     this.fajosEuros.children.iterate(fajo => {
@@ -114,7 +127,7 @@ export default class tresScene extends Phaser.Scene {
       });
       fajo.setCollideWorldBounds(true);
       fajo.setScale(this.escala);
-      fajo.on('drag', function(pointer, dragX, dragY) {
+      fajo.on("drag", function(pointer, dragX, dragY) {
         this.x = dragX;
         this.y = dragY;
       });
@@ -122,8 +135,14 @@ export default class tresScene extends Phaser.Scene {
   }
 
   colorearFajos(scene, elemento) {
-    let within = scene.physics.overlapRect(elemento.posX, elemento.posY,
-      elemento.rectW, elemento.rectH, true, true);
+    let within = scene.physics.overlapRect(
+      elemento.posX,
+      elemento.posY,
+      elemento.rectW,
+      elemento.rectH,
+      true,
+      true
+    );
     within.forEach(function(body) {
       body.gameObject.setTint(elemento.color); //.destroy();
     });
@@ -135,17 +154,26 @@ export default class tresScene extends Phaser.Scene {
    */
   resultadoAleatorio(arrayDatos) {
     let longArray = arrayDatos.length;
-    if (longArray < 1)
-      return null;
+    if (longArray < 1) return null;
     let aleatorio = Math.floor(Math.random() * longArray);
     let seleccion = arrayDatos[aleatorio];
     arrayDatos.splice(aleatorio, 1);
     return seleccion;
   }
 
+  eliminarUnaRespuesta() {
+    if(this.pregunta.comodines.length == 2){
+      this.pregunta.respuestas[this.pregunta.comodines[1]._5050.pop()] = null;
+      console.log('eliminarUnaRespuesta: ');
+      console.log(this.pregunta.respuestas);
+      console.log(this.pregunta.comodines[1]._5050);
+    }
+  }
+
   comodin5050() {
-    this.pregunta.comodines[1]._5050.sort().forEach(eliminar =>
-      this.pregunta.respuestas.slice(eliminar, 1));
+    this.pregunta.comodines[1]._5050
+      .sort()
+      .forEach(eliminar => this.pregunta.respuestas.slice(eliminar, 1));
     console.log(this.pregunta);
   }
 

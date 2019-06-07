@@ -5,10 +5,6 @@ export default class FinalNoMoney extends Phaser.Scene {
     super('FinalNoMoney');
   }
 
-  init(datos) {
-    this.score = datos.score;
-  }
-
   getSizes() {
     let sizes = new Sizes();
     this.escala = sizes.escala;
@@ -16,11 +12,7 @@ export default class FinalNoMoney extends Phaser.Scene {
     this.totalHeight = sizes.totalHeight;
     this.fontSize = sizes.fontSize * 2;
   }
-
-  preload() {
-
-  }
-
+  
   create() {
     this.getSizes();
 
@@ -37,9 +29,4 @@ export default class FinalNoMoney extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0xbababa);
 
   }
-
-  update() {
-
-  }
-
 }
