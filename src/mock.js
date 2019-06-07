@@ -309,6 +309,7 @@ const juegoConfig = {
     pista: 1,
     eliminar: 1
   }],
+  backGroundColor: 0xbababa,
   colores: [
     0xff0000,
     0x00ff00,

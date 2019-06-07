@@ -1,19 +1,20 @@
 import fajoBilletes from "../../src/assets/fajoE.png";
 import Fajos from "../objects/Fajos";
 import Sizes from "../utils/sizes";
-import {
-  cuestionarios,
-  juegoConfig
-} from "../mock";
-import {
-  reloj
-} from "../objects/reloj";
+import {cuestionarios, juegoConfig} from "../mock";
+import {reloj} from "../objects/reloj";
 import Respuesta from "../objects/Respuesta";
 
-export default class unoScene extends Phaser.Scene {
-  constructor() {
-    super('unoScene');
-    this.score = 100;
+export default class PreguntasScene extends Phaser.Scene {
+  constructor(datos) {
+    super('PreguntasScene');
+  }
+
+  init(datos) {
+    this.score = datos.score;
+    this.preguntas = datos.preguntas;
+    this.nivelJuego = datos.nivelJuego;
+    this.numeroRespuestas = datos.numeroRespuestas;
   }
 
   preload() {
@@ -21,9 +22,6 @@ export default class unoScene extends Phaser.Scene {
   }
 
   inicializarScene() {
-    this.nivelJuego = 1;
-    this.numeroRespuestas = 4;
-    this.preguntas = this.getCuestion();
     this.pregunta = this.pregunta || this.resultadoAleatorio(this.preguntas);
     this.colores = juegoConfig.colores.slice();
     this.getSizes();
@@ -40,11 +38,6 @@ export default class unoScene extends Phaser.Scene {
     this.posicionRect = sizes.posicionRectangulos(this);
   }
 
-  getCuestion() {
-    let aleatorio = Phaser.Math.Between(0, 1);
-    return cuestionarios[aleatorio].preguntas.slice();
-  }
-
   create() {
     this.inicializarScene();
 
@@ -57,7 +50,7 @@ export default class unoScene extends Phaser.Scene {
     this.posicionesRespuestas = [];
 
     this.pregunta.respuestas.forEach(respuesta => {
-      if (respuesta) {
+      if (respuesta != null) {
         this.posicionRect.color = this.resultadoAleatorio(this.colores);
         this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
 
@@ -74,7 +67,7 @@ export default class unoScene extends Phaser.Scene {
   }
 
   timeIsOver() {
-    console.log('Final escena 1');
+    console.log('Final escena 3');
 
     this.fajosCorrectos = this.fajos.devolverFajos(this,
       this.posicionesRespuestas[this.pregunta.respuestaCorrecta]);
@@ -83,7 +76,7 @@ export default class unoScene extends Phaser.Scene {
       score: this.fajosCorrectos.length * juegoConfig.valorFajo,
       preguntas: this.preguntas,
       pregunta: this.pregunta,
-      nivelJuego: 1
+      nivelJuego: 3
     });
   }
 
@@ -158,7 +151,7 @@ export default class unoScene extends Phaser.Scene {
 
   update() {
     this.fajosEuros.children.iterate(fajo => {
-      fajo.clearTint(); // es lo mismo pintar de blanco (0xffffff);
+      fajo.clearTint();
     });
 
     this.posicionesRespuestas.forEach(elemento => {

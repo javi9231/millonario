@@ -1,11 +1,12 @@
 import Phaser from "phaser";
 import cuestionarios from "./mock.js";
-import api from "./js/api/api.js";
+import api from "./api/api.js";
 import unoScene from './scenes/unoScene';
 import dosScene from './scenes/dosScene';
 import tresScene from './scenes/tresScene';
 import cuatroScene from './scenes/cuatroScene';
 import cincoScene from './scenes/cincoScene';
+import PreguntasScene from './scenes/PreguntasScene';
 import FinalRespuesta from './scenes/FinalRespuesta';
 import FinalNoMoney from './scenes/FinalNoMoney';
 import FinalGanador from './scenes/FinalGanador';
@@ -35,6 +36,7 @@ const config = {
     tresScene,
     cuatroScene,
     cincoScene,
+    PreguntasScene,
     FinalRespuesta,
     FinalNoMoney,
     FinalGanador

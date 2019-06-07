@@ -1,6 +1,6 @@
-// import fajoBilletes from "../assets/fajoE.svg";
-// import MedidorTiempo from "../../js/object/MedidorTiempo.js";
-import { juegoConfig } from "../mock";
+import {
+  juegoConfig
+} from "../mock";
 import Sizes from "../utils/sizes";
 
 export default class FinalRespuesta extends Phaser.Scene {
@@ -13,11 +13,11 @@ export default class FinalRespuesta extends Phaser.Scene {
     this.add.displayList.removeAll();
     this.score = datos.score;
     this.fajosEuros = datos.fajosCorrectos,
-    this.preguntas = datos.preguntas || 'falta preguntas';
+      this.preguntas = datos.preguntas || 'falta preguntas';
     this.pregunta = datos.pregunta || 'falta pregunta';
   }
 
-  getSizes(){
+  getSizes() {
     let sizes = new Sizes();
     this.escala = sizes.escala;
     this.totalWidth = sizes.totalWidth;
@@ -45,14 +45,6 @@ export default class FinalRespuesta extends Phaser.Scene {
     this.getSizes();
     this.inicializarScene();
 
-    this.scale.on('orientationchange', function(orientation) {
-      if (orientation === Phaser.Scale.PORTRAIT) {
-        console.log('PORTRAIT');
-      } else if (orientation === Phaser.Scale.LANDSCAPE) {
-        console.log('LANDSCAPE');
-      }
-    });
-
     this.cameras.main.setBackgroundColor(0xbababa);
 
     this.input.on('pointerup', function(pointer) {
@@ -66,68 +58,71 @@ export default class FinalRespuesta extends Phaser.Scene {
       this.pasaScene();
     } else {
       console.log('Sin money 1');
-      this.scene.remove('cincoScene');
+      this.scene.remove('PreguntasScene');
       this.scene.start('FinalNoMoney');
     }
   }
 
   pasaScene() {
+    // this.scene.remove('PreguntasScene');
     if (this.score > 0) {
       switch (this.nivelJuego) {
         case 1:
-          this.scene.remove('unoScene');
-          this.scene.start('dosScene', {
+          this.scene.start('PreguntasScene', {
             score: this.score,
             fajosEuros: this.fajosEuros,
-            preguntas: this.preguntas
+            preguntas: this.preguntas,
+            nivelJuego: 1,
+            numeroRespuestas: 4
           });
           break;
         case 2:
-          this.scene.remove('dosScene');
-          this.scene.start('tresScene', {
+          this.scene.restart('PreguntasScene', {
             score: this.score,
             fajosEuros: this.fajosEuros,
-            preguntas: this.preguntas
+            preguntas: this.preguntas,
+            nivelJuego: 2,
+            numeroRespuestas: 4
           });
           break;
         case 3:
-          this.scene.remove('tresScene');
-          this.scene.start('cuatroScene', {
+          this.scene.restart('PreguntasScene', {
             score: this.score,
-            fajosEuros: this.fajosEuros,
-            preguntas: this.preguntas
+            preguntas: this.preguntas,
+            nivelJuego: 3,
+            numeroRespuestas: 3
           });
           break;
         case 4:
-          this.scene.remove('cuatroScene');
-          this.scene.start('cincoScene', {
+          this.scene.restart('PreguntasScene', {
             score: this.score,
-            fajosEuros: this.fajosEuros,
-            preguntas: this.preguntas
+            preguntas: this.preguntas,
+            nivelJuego: 4,
+            numeroRespuestas: 3
           });
           break;
         case 5:
-          if(this.score > 0){
-            this.scene.remove('cincoScene');
-            this.scene.start('FinalGanador', {
-              score: this.score
-            });
-          }
+          this.scene.restart('PreguntasScene', {
+            score: this.score,
+            nivelJuego: 5,
+            numeroRespuestas: 2
+          });
+          break;
+        case 6:
+          this.scene.remove('PreguntasScene');
+          this.scene.start('FinalGanador', {
+            score: this.score
+          });
+          break;
         default:
           break;
       }
-    }else {
-      this.scene.remove('cincoScene');
-      this.scene.start('FinalNoMoney');
     }
     this.nivelJuego++;
     console.log('pasaScene Nivel' + this.nivelJuego);
     console.log('puntuacion ' + this.score);
   }
 
-  liberarScene() {
-
-  }
   update() {
 
   }
