@@ -28,6 +28,25 @@ export default class FinalRespuesta extends Phaser.Scene {
   }
 
   inicializarScene() {
+    if (this.preguntaText) {
+      this.preguntaText.text = this.pregunta.respuestas[this.pregunta.respuestaCorrecta] + '\n Puntos: ' + this.score;
+    } else {
+      this.preguntaText = this.add.text(40, this.totalHeight / 4,
+        this.pregunta.respuestas[this.pregunta.respuestaCorrecta] + '\n Puntos: ' + this.score, {
+          fontSize: this.fontSize,
+          fill: '#000',
+          align: 'center',
+          wordWrap: {
+            width: this.totalWidth - this.fontSize
+          }
+        });
+    }
+  }
+
+  create() {
+    this.getSizes();
+    //this.inicializarScene();
+
     this.preguntaText = this.add.text(40, this.totalHeight / 4,
       this.pregunta.respuestas[this.pregunta.respuestaCorrecta] + '\n Puntos: ' + this.score, {
         fontSize: this.fontSize,
@@ -37,14 +56,6 @@ export default class FinalRespuesta extends Phaser.Scene {
           width: this.totalWidth - this.fontSize
         }
       });
-
-    this.colores = juegoConfig.colores.slice();
-  }
-
-  create() {
-    this.getSizes();
-    this.inicializarScene();
-
     this.cameras.main.setBackgroundColor(0xbababa);
 
     this.input.on('pointerup', function(pointer) {

@@ -72,7 +72,7 @@ export default class PreguntasScene extends Phaser.Scene {
     this.fajosCorrectos = this.fajos.devolverFajos(this,
       this.posicionesRespuestas[this.pregunta.respuestaCorrecta]);
 
-    this.scene.start('FinalRespuesta', {
+    this.scene.restart('FinalRespuesta', {
       score: this.fajosCorrectos.length * juegoConfig.valorFajo,
       preguntas: this.preguntas,
       pregunta: this.pregunta,
