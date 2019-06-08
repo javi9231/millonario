@@ -76,7 +76,7 @@ export default class dosScene extends Phaser.Scene {
       score: this.fajosCorrectos.length * juegoConfig.valorFajo,
       preguntas: this.preguntas,
       pregunta: this.pregunta,
-      nivelJuego: 2
+      nivelJuego: this.nivelJuego
     });
   }
 

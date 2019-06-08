@@ -25,36 +25,8 @@ export default class FinalRespuesta extends Phaser.Scene {
     this.tamanioRespuestaH = this.totalHeight / 4;
   }
 
-  inicializarScene() {
-    // if (this.preguntaText) {
-    //   this.preguntaText.text =
-    //     "La respuesta correcta era:\n" +
-    //     this.pregunta.respuestas[this.pregunta.respuestaCorrecta] +
-    //     "\n Puntos: " +
-    //     this.score;
-    // } else {
-    //   this.preguntaText = this.add.text(
-    //     40,
-    //     this.totalHeight / 4,
-    //     this.pregunta.respuestas[this.pregunta.respuestaCorrecta] +
-    //       "\n Puntos: " +
-    //       this.score,
-    //     {
-    //       fontSize: this.fontSize,
-    //       fill: "#000",
-    //       align: "center",
-    //       wordWrap: {
-    //         width: this.totalWidth - this.fontSize
-    //       }
-    //     }
-    //   );
-    // }
-  }
-
   create() {
     this.getSizes();
-    //this.inicializarScene();
-
     this.preguntaText = this.add.text(
       40,
       this.totalHeight / 4,

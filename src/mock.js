@@ -311,9 +311,9 @@ const juegoConfig = {
   }],
   backGroundColor: 0xbababa,
   colores: [
-    0xff0000,
-    0x00ff00,
-    0x0000ff,
+    0x660000,
+    0x000099,
+    0x00cc00,
     0xff00ff
   ]
 }

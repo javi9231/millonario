@@ -83,7 +83,7 @@ export default class unoScene extends Phaser.Scene {
       score: this.fajosCorrectos.length * juegoConfig.valorFajo,
       preguntas: this.preguntas,
       pregunta: this.pregunta,
-      nivelJuego: 1
+      nivelJuego: this.nivelJuego
     });
   }
 
