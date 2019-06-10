@@ -20,7 +20,7 @@ export default class FinalRespuesta extends Phaser.Scene {
     this.escala = sizes.escala;
     this.totalWidth = sizes.totalWidth;
     this.totalHeight = sizes.totalHeight;
-    this.fontSize = sizes.fontSize * this.escala * 2;
+    this.fontSize = sizes.fontSize * this.escala;
     this.tamanioRespuestaW = this.totalWidth / this.numeroRespuestas;
     this.tamanioRespuestaH = this.totalHeight / 4;
   }
@@ -29,8 +29,8 @@ export default class FinalRespuesta extends Phaser.Scene {
     this.getSizes();
     this.preguntaText = this.add.text(
       40,
-      this.totalHeight / 4,
-      "La respuesta correcta es:\n" +
+      this.totalHeight / 8,
+      "Respuesta correcta:\n" +
       this.pregunta.respuestas[this.pregunta.respuestaCorrecta] +
         "\n Puntos: " +
         this.score,

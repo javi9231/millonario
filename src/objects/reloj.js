@@ -45,8 +45,8 @@ class reloj extends Phaser.GameObjects.Container {
 
     const timer = (this.timer = H.makeText(
       this.scene,
-      100 * this.scene.escala,
-      100 * this.scene.escala,
+      50 * this.scene.escala,
+      50 * this.scene.escala,
       null,
       "100px",
       "#FFFFFF"

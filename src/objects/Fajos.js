@@ -12,6 +12,7 @@ class Fajos extends Phaser.GameObjects.Sprite {
     return this.scene.physics.add.group({
       key: this.image,
       repeat: this.nRepeat,
+      scale: this.scene.escala,
       setXY: {
         x: this.scene.totalWidth /2,
         y: this.scene.posicionRect.posY - 100

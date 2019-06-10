@@ -1,4 +1,4 @@
-import fajoBilletes from "../../src/assets/fajoE.svg";
+import fajoBilletes from "../../src/assets/fajoE.png";
 import Fajos from "../objects/Fajos";
 import Sizes from "../utils/sizes";
 import { cuestionarios, juegoConfig } from "../mock";

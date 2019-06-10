@@ -1,5 +1,7 @@
 export default class Sizes {
   constructor() {
+    let ratio = 1;
+    
     this.escala = window.devicePixelRatio;
     this.totalWidth = window.innerWidth * this.escala;
     this.totalHeight = window.innerHeight * this.escala;
