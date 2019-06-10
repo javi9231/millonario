@@ -153,9 +153,10 @@ export default class cincoScene extends Phaser.Scene {
   }
 
   comodin5050() {
-    this.pregunta.comodines[1]._5050.sort().forEach(eliminar =>
-      this.pregunta.respuestas.slice(eliminar, 1));
+    this.pregunta.comodines[1]._5050.sort().forEach(eliminar => {
+      this.pregunta.respuestas[eliminar] = null;
     console.log(this.pregunta);
+    });
   }
 
   update() {

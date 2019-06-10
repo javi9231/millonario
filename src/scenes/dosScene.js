@@ -143,12 +143,6 @@ export default class dosScene extends Phaser.Scene {
     return seleccion;
   }
 
-  comodin5050() {
-    this.pregunta.comodines[1]._5050.sort().forEach(eliminar =>
-      this.pregunta.respuestas.slice(eliminar, 1));
-    console.log(this.pregunta);
-  }
-
   update() {
     this.fajosEuros.children.iterate(fajo => {
       fajo.clearTint();
