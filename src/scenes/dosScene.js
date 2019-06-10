@@ -49,17 +49,26 @@ export default class dosScene extends Phaser.Scene {
 
     this.posicionesRespuestas = [];
 
-    this.pregunta.respuestas.forEach(respuesta => {
-      if (respuesta) {
-        this.posicionRect.color = this.resultadoAleatorio(this.colores);
-        this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
+  this.pregunta.respuestas.forEach(respuesta => {
+  if (respuesta) {
+    this.posicionRect.color = this.colores.pop();
 
-        this.res1 = new Respuesta(this, this.gameView, this.posicionRect,
-          respuesta, this.posicionRect.color);
-        this.posicionRect.posX += (this.tamanioRespuestaW);
-        console.log(this.posicionesRespuestas);
-      }
-    });
+    console.log("posiciones : " + this.posicionRect.color[0]);
+    this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
+
+    this.res1 = new Respuesta(
+      this,
+      this.gameView,
+      this.posicionRect,
+      respuesta,
+      this.posicionRect.color[0]
+    );
+    this.posicionRect.posX += this.tamanioRespuestaW;
+    console.log(this.posicionesRespuestas);
+  }else {
+    this.posicionesRespuestas.push(null);
+  }
+});
 
     this.crearFajos((this.score / juegoConfig.valorFajo) - 1);
     // -1 porque la libreria empieza a crear desde 0
@@ -69,8 +78,7 @@ export default class dosScene extends Phaser.Scene {
   timeIsOver() {
     console.log('Final escena 2');
 
-    this.fajosCorrectos = this.fajos.devolverFajos(this,
-      this.posicionesRespuestas[this.pregunta.respuestaCorrecta]);
+    this.fajosCorrectos = this.fajos.fajosPorColor(this, this.posicionesRespuestas, this.pregunta);
 
     this.scene.start('FinalRespuesta', {
       score: this.fajosCorrectos.length * juegoConfig.valorFajo,
@@ -125,7 +133,7 @@ export default class dosScene extends Phaser.Scene {
     let within = scene.physics.overlapRect(elemento.posX, elemento.posY,
       elemento.rectW, elemento.rectH, true, true);
     within.forEach(function(body) {
-      body.gameObject.setTint(elemento.color); //.destroy();
+      body.gameObject.setTint(elemento.color[0]);
     });
   }
 

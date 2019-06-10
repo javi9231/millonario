@@ -1,13 +1,14 @@
 import fajoBilletes from "../../src/assets/fajoE.png";
+import {cuestionarios, juegoConfig} from "../mock";
 import Fajos from "../objects/Fajos";
 import Sizes from "../utils/sizes";
-import {cuestionarios, juegoConfig} from "../mock";
+import comodin5050 from "../utils/comodines";
 import {reloj} from "../objects/reloj";
 import Respuesta from "../objects/Respuesta";
 
 export default class cincoScene extends Phaser.Scene {
   constructor(datos) {
-    super('cincoScene');
+    super("cincoScene");
   }
 
   init(datos) {
@@ -16,7 +17,7 @@ export default class cincoScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('fajoE', fajoBilletes);
+    this.load.image("fajoE", fajoBilletes);
   }
 
   inicializarScene() {
@@ -25,7 +26,7 @@ export default class cincoScene extends Phaser.Scene {
     this.pregunta = this.pregunta || this.resultadoAleatorio(this.preguntas);
     this.colores = juegoConfig.colores.slice();
     this.getSizes();
-    this.comodin5050();
+    comodin5050(this.pregunta);
   }
 
   getSizes() {
@@ -51,8 +52,10 @@ export default class cincoScene extends Phaser.Scene {
     this.posicionesRespuestas = [];
 
     this.pregunta.respuestas.forEach(respuesta => {
-      if (respuesta != null) {
-        this.posicionRect.color = this.resultadoAleatorio(this.colores);
+      if (respuesta) {
+        this.posicionRect.color = this.colores.pop();
+
+        console.log("posiciones : " + this.posicionRect.color[0]);
         this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
 
         this.res1 = new Respuesta(
@@ -60,28 +63,29 @@ export default class cincoScene extends Phaser.Scene {
           this.gameView,
           this.posicionRect,
           respuesta,
-          this.posicionRect.color
+          this.posicionRect.color[0]
         );
         this.posicionRect.posX += this.tamanioRespuestaW;
         console.log(this.posicionesRespuestas);
-      } else{
+      }else {
         this.posicionesRespuestas.push(null);
       }
     });
 
-
-    this.crearFajos((this.score / juegoConfig.valorFajo) - 1);
+    this.crearFajos(this.score / juegoConfig.valorFajo - 1);
     // -1 porque la libreria empieza a crear desde 0
-
   }
 
   timeIsOver() {
-    console.log('Final escena 5');
+    console.log("Final escena 5");
 
-    this.fajosCorrectos = this.fajos.devolverFajos(this,
-      this.posicionesRespuestas[this.pregunta.respuestaCorrecta]);
+    this.fajosCorrectos = this.fajos.fajosPorColor(
+      this,
+      this.posicionesRespuestas,
+      this.pregunta
+    );
 
-    this.scene.start('FinalRespuesta', {
+    this.scene.start("FinalRespuesta", {
       score: this.fajosCorrectos.length * juegoConfig.valorFajo,
       preguntas: this.preguntas,
       pregunta: this.pregunta,
@@ -90,31 +94,35 @@ export default class cincoScene extends Phaser.Scene {
   }
 
   mostrarPregunta() {
-    this.preguntaText = this.add.text(40, 20,
-      this.pregunta.pregunta + ' score: ' + this.score, {
+    this.preguntaText = this.add.text(
+      40,
+      20,
+      this.pregunta.pregunta + " score: " + this.score,
+      {
         fontSize: this.fontSize, //'40px',
-        fill: '#000',
-        align: 'center',
+        fill: "#000",
+        align: "center",
         wordWrap: {
           width: this.totalWidth - this.fontSize
         }
-      });
+      }
+    );
   }
 
   iniciarTemporizador(tiempo) {
     this.gameView = this.add.container();
-    this.timer = new reloj(this, this.gameView, 'reloj');
+    this.timer = new reloj(this, this.gameView, "reloj");
     this.timer.countdown(tiempo);
 
     this.eventos = this.sys.events;
-    this.eventos.on('countdown', () => {
+    this.eventos.on("countdown", () => {
       this.timer.abort();
       this.timeIsOver();
     });
   }
 
   crearFajos(nFajos) {
-    this.fajos = new Fajos(this, 100, 100, 'fajoE', nFajos);
+    this.fajos = new Fajos(this, 100, 100, "fajoE", nFajos);
     this.fajosEuros = this.fajos.getFajos();
 
     this.fajosEuros.children.iterate(fajo => {
@@ -123,7 +131,7 @@ export default class cincoScene extends Phaser.Scene {
       });
       fajo.setCollideWorldBounds(true);
       fajo.setScale(this.escala);
-      fajo.on('drag', function(pointer, dragX, dragY) {
+      fajo.on("drag", function(pointer, dragX, dragY) {
         this.x = dragX;
         this.y = dragY;
       });
@@ -131,10 +139,16 @@ export default class cincoScene extends Phaser.Scene {
   }
 
   colorearFajos(scene, elemento) {
-    let within = scene.physics.overlapRect(elemento.posX, elemento.posY,
-      elemento.rectW, elemento.rectH, true, true);
+    let within = scene.physics.overlapRect(
+      elemento.posX,
+      elemento.posY,
+      elemento.rectW,
+      elemento.rectH,
+      true,
+      true
+    );
     within.forEach(function(body) {
-      body.gameObject.setTint(elemento.color); //.destroy();
+      body.gameObject.setTint(elemento.color[0]);
     });
   }
 
@@ -144,20 +158,14 @@ export default class cincoScene extends Phaser.Scene {
    */
   resultadoAleatorio(arrayDatos) {
     let longArray = arrayDatos.length;
-    if (longArray < 1)
-      return null;
+    if (longArray < 1) return null;
     let aleatorio = Math.floor(Math.random() * longArray);
     let seleccion = arrayDatos[aleatorio];
     arrayDatos.splice(aleatorio, 1);
     return seleccion;
   }
 
-  comodin5050() {
-    this.pregunta.comodines[1]._5050.sort().forEach(eliminar => {
-      this.pregunta.respuestas[eliminar] = null;
-    console.log(this.pregunta);
-    });
-  }
+
 
   update() {
     this.fajosEuros.children.iterate(fajo => {

@@ -311,10 +311,10 @@ const juegoConfig = {
   }],
   backGroundColor: 0xbababa,
   colores: [
-    0x660000,
-    0x000099,
-    0x00cc00,
-    0xff00ff
+    [0xff8400, 34047],
+    [0x00ff00, 65280],
+    [0x0000ff, 16711680],
+    [0xff00ff, 16711935]
   ]
 }
 export {cuestionarios, juegoConfig};

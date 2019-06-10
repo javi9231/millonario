@@ -51,8 +51,10 @@ export default class tresScene extends Phaser.Scene {
     this.posicionesRespuestas = [];
 
     this.pregunta.respuestas.forEach(respuesta => {
-      if (respuesta != null) {
-        this.posicionRect.color = this.resultadoAleatorio(this.colores);
+      if (respuesta) {
+        this.posicionRect.color = this.colores.pop();
+
+        console.log("posiciones : " + this.posicionRect.color[0]);
         this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
 
         this.res1 = new Respuesta(
@@ -60,11 +62,11 @@ export default class tresScene extends Phaser.Scene {
           this.gameView,
           this.posicionRect,
           respuesta,
-          this.posicionRect.color
+          this.posicionRect.color[0]
         );
         this.posicionRect.posX += this.tamanioRespuestaW;
         console.log(this.posicionesRespuestas);
-      } else{
+      }else {
         this.posicionesRespuestas.push(null);
       }
     });
@@ -88,9 +90,10 @@ export default class tresScene extends Phaser.Scene {
   timeIsOver() {
     console.log("Final escena 3");
 
-    this.fajosCorrectos = this.fajos.devolverFajos(
+    this.fajosCorrectos = this.fajos.fajosPorColor(
       this,
-      this.posicionesRespuestas[this.pregunta.respuestaCorrecta]
+      this.posicionesRespuestas,
+      this.pregunta
     );
 
     this.scene.start("FinalRespuesta", {
@@ -144,7 +147,7 @@ export default class tresScene extends Phaser.Scene {
       true
     );
     within.forEach(function(body) {
-      body.gameObject.setTint(elemento.color); //.destroy();
+      body.gameObject.setTint(elemento.color[0]); //.destroy();
     });
   }
 
@@ -162,9 +165,9 @@ export default class tresScene extends Phaser.Scene {
   }
 
   eliminarUnaRespuesta() {
-    if(this.pregunta.comodines.length == 2){
+    if (this.pregunta.comodines.length == 2) {
       this.pregunta.respuestas[this.pregunta.comodines[1]._5050.pop()] = null;
-      console.log('eliminarUnaRespuesta: ');
+      console.log("eliminarUnaRespuesta: ");
       console.log(this.pregunta.respuestas);
       console.log(this.pregunta.comodines[1]._5050);
     }
