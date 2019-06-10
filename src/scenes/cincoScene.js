@@ -67,7 +67,7 @@ export default class cincoScene extends Phaser.Scene {
         );
         this.posicionRect.posX += this.tamanioRespuestaW;
         console.log(this.posicionesRespuestas);
-      }else {
+      } else {
         this.posicionesRespuestas.push(null);
       }
     });
@@ -130,12 +130,20 @@ export default class cincoScene extends Phaser.Scene {
         draggable: true
       });
       fajo.setCollideWorldBounds(true);
-      fajo.setScale(this.escala);
+
+      fajo.setScale(this.escalaFajo(this.scene.escala));
       fajo.on("drag", function(pointer, dragX, dragY) {
         this.x = dragX;
         this.y = dragY;
       });
     });
+  }
+
+  escalaFajo(escala) {
+    if (escala == 2) {
+      return 0.5;
+    }
+    return escala;
   }
 
   colorearFajos(scene, elemento) {
@@ -164,8 +172,6 @@ export default class cincoScene extends Phaser.Scene {
     arrayDatos.splice(aleatorio, 1);
     return seleccion;
   }
-
-
 
   update() {
     this.fajosEuros.children.iterate(fajo => {

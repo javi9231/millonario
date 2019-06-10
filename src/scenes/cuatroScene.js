@@ -54,19 +54,22 @@ export default class cuatroScene extends Phaser.Scene {
       if (respuesta) {
         this.posicionRect.color = this.colores.pop();
 
-        console.log('posiciones : ' + this.posicionRect.color[0]);
+        console.log("posiciones : " + this.posicionRect.color[0]);
         this.posicionesRespuestas.push(Object.assign({}, this.posicionRect));
 
-        this.res1 = new Respuesta(this, this.gameView, this.posicionRect,
-          respuesta, this.posicionRect.color[0]);
-        this.posicionRect.posX += (this.tamanioRespuestaW);
+        this.res1 = new Respuesta(
+          this,
+          this.gameView,
+          this.posicionRect,
+          respuesta,
+          this.posicionRect.color[0]
+        );
+        this.posicionRect.posX += this.tamanioRespuestaW;
         console.log(this.posicionesRespuestas);
-      }else {
+      } else {
         this.posicionesRespuestas.push(null);
       }
     });
-
-
 
     this.crearFajos(this.score / juegoConfig.valorFajo - 1);
     // -1 porque la libreria empieza a crear desde 0
@@ -120,18 +123,25 @@ export default class cuatroScene extends Phaser.Scene {
   crearFajos(nFajos) {
     this.fajos = new Fajos(this, 100, 100, "fajoE", nFajos);
     this.fajosEuros = this.fajos.getFajos();
-
     this.fajosEuros.children.iterate(fajo => {
       fajo.setInteractive({
         draggable: true
       });
       fajo.setCollideWorldBounds(true);
-      fajo.setScale(this.escala);
+
+      fajo.setScale(this.escalaFajo(this.scene.escala));
       fajo.on("drag", function(pointer, dragX, dragY) {
         this.x = dragX;
         this.y = dragY;
       });
     });
+  }
+
+  escalaFajo(escala) {
+    if (escala == 2) {
+      return 0.5;
+    }
+    return escala;
   }
 
   colorearFajos(scene, elemento) {
