@@ -1,4 +1,4 @@
-import {juegoConfig} from "../mock";
+import { juegoConfig } from "../mock";
 import Sizes from "../utils/sizes";
 
 export default class FinalRespuesta extends Phaser.Scene {
@@ -15,23 +15,15 @@ export default class FinalRespuesta extends Phaser.Scene {
     this.pregunta = datos.pregunta || "falta pregunta";
   }
 
-  getSizes() {
-    let sizes = new Sizes();
-    this.escala = sizes.escala;
-    this.totalWidth = sizes.totalWidth;
-    this.totalHeight = sizes.totalHeight;
-    this.fontSize = sizes.fontSize * this.escala;
-    this.tamanioRespuestaW = this.totalWidth / this.numeroRespuestas;
-    this.tamanioRespuestaH = this.totalHeight / 4;
-  }
-
   create() {
-    this.getSizes();
+    let sizes = new Sizes();
+    sizes.getSizes(this);
+
     this.preguntaText = this.add.text(
       40,
       this.totalHeight / 8,
       "Respuesta correcta:\n" +
-      this.pregunta.respuestas[this.pregunta.respuestaCorrecta] +
+        this.pregunta.respuestas[this.pregunta.respuestaCorrecta] +
         "\n Puntos: " +
         this.score,
       {

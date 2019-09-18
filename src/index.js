@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import cuestionarios from "./mock.js";
 import api from "./api/api.js";
+import PantallaInicio from './scenes/PantallaInicio';
 import unoScene from './scenes/unoScene';
 import dosScene from './scenes/dosScene';
 import tresScene from './scenes/tresScene';
@@ -30,6 +31,7 @@ const config = {
     }
   },
   scene: [
+    PantallaInicio,
     unoScene,
     dosScene,
     tresScene,

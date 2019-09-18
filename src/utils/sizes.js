@@ -11,12 +11,22 @@ export default class Sizes {
   checkOriention(orientation) {
     if (orientation === Phaser.Scale.PORTRAIT) {
       graphics.alpha = 0.2;
-      console.log('PORTRAIT');
+      console.log("PORTRAIT");
       //text.setVisible(true);
     } else if (orientation === Phaser.Scale.LANDSCAPE) {
       graphics.alpha = 1;
-      console.log('LANDSCAPE');
+      console.log("LANDSCAPE");
     }
+  }
+
+  getSizes(scene) {
+    scene.escala = this.escala;
+    scene.totalWidth = this.totalWidth;
+    scene.totalHeight = this.totalHeight;
+    scene.fontSize = this.fontSize;
+    scene.tamanioRespuestaW = scene.totalWidth / scene.numeroRespuestas;
+    scene.tamanioRespuestaH = scene.totalHeight / 4;
+    scene.posicionRect = this.posicionRectangulos(scene);
   }
 
   posicionRectangulos(scene) {
@@ -28,7 +38,7 @@ export default class Sizes {
       escala: scene.escala,
       posXfajos: (100 + scene.fontSize) * scene.escala,
       color: 0xff0000
-    }
+    };
   }
 
   // this.scale.on('orientationchange', function(orientation) {
@@ -38,6 +48,4 @@ export default class Sizes {
   //     console.log('LANDSCAPE');
   //   }
   // });
-
-
 }

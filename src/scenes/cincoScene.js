@@ -1,9 +1,9 @@
 import fajoBilletes from "../../src/assets/fajoE.png";
-import {cuestionarios, juegoConfig} from "../mock";
+import { cuestionarios, juegoConfig } from "../mock";
 import Fajos from "../objects/Fajos";
 import Sizes from "../utils/sizes";
 import comodin5050 from "../utils/comodines";
-import {reloj} from "../objects/reloj";
+import { reloj } from "../objects/reloj";
 import Respuesta from "../objects/Respuesta";
 
 export default class cincoScene extends Phaser.Scene {
@@ -25,19 +25,9 @@ export default class cincoScene extends Phaser.Scene {
     this.numeroRespuestas = 2;
     this.pregunta = this.pregunta || this.resultadoAleatorio(this.preguntas);
     this.colores = juegoConfig.colores.slice();
-    this.getSizes();
-    comodin5050(this.pregunta);
-  }
-
-  getSizes() {
     let sizes = new Sizes();
-    this.escala = sizes.escala;
-    this.totalWidth = sizes.totalWidth;
-    this.totalHeight = sizes.totalHeight;
-    this.fontSize = sizes.fontSize;
-    this.tamanioRespuestaW = this.totalWidth / this.numeroRespuestas;
-    this.tamanioRespuestaH = this.totalHeight / 4;
-    this.posicionRect = sizes.posicionRectangulos(this);
+    sizes.getSizes(this);
+    comodin5050(this.pregunta);
   }
 
   create() {
